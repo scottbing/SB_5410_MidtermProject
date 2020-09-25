@@ -93,14 +93,28 @@ class Application(Frame):
     #     else:
     #         self.reverse_btn.config(relief="sunken")
 
+    # function to be called when mouse is clicked
+    def getcoords(self, event):
+        # outputting x and y coords to console
+        print(event.x, event.y)
+        return (event.x, event.y)
+
     def putImage(self, fileName):
         """Get the image from the Open menu and
             place it on hte screen"""
         # Show the user selected image
+        # set up orginal story frame
+        imageFrame = LabelFrame(self, text="Original Story")
+        imageFrame.grid(row=0, column=0, sticky="nsew")
+
         self.image = Image.open(self.fileName)
         self.photo = ImageTk.PhotoImage(self.image)
-        self.imglbl = Label(self, image=self.photo)
-        self.imglbl.grid(row=0, column=0, columnspan=4, sticky="nsew")
+        self.canvas = Canvas(imageFrame, bd=0, width=self.photo.width(), height=self.photo.height())
+        self.canvas.grid(row=0, column=0, sticky=N + S + E + W)
+
+        # handle mouse clicks
+        self.canvas.create_image(0, 0, image=self.photo, anchor="nw")
+        self.canvas.bind("<Button 1>", self.getcoords)
 
         print("Current Image Size: ", self.image.size)
 
@@ -273,6 +287,7 @@ class Application(Frame):
 
     # end def is_number(n):
 
+
     def sortPixels(self):
         """ Sorts the image pixels and writes
             out a new image """
@@ -356,11 +371,21 @@ class Application(Frame):
         # get angle
         angle = (int(self.angle_ent.get()))
         print("angle: ", angle)
+        self.angle_ent['text'] = ""
+        root.update()
         # rotate image
         out = im.rotate(angle)
         # save rotated image
         out.save('rotated-' + base)
         print("file rotated-" + base + " saved")
+
+        # def clearScreen():
+        #     top.delete("1.0", "end")
+        #     bottom.delete("1.0", "end")
+        #
+        #     # clear status bar
+        #     status['text'] = ""
+        #
 
     # resize an image
     def resize(self):

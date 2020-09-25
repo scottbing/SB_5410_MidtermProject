@@ -7,6 +7,13 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="ProjectId" id="1hyxLBRIimZovkKNpBVdUWD6KmL" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -22,7 +29,7 @@
       <recent name="$PROJECT_DIR$/venv" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.tyit">
     <configuration name="sb_5410_midterm" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MidtermProject" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -44,8 +51,30 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="tyit" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="MidtermProject" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/venv" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/tyit.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.tyit" />
         <item itemvalue="Python.sb_5410_midterm" />
       </list>
     </recent_temporary>
@@ -64,29 +93,81 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1554" height="245" key="GridCell.Tab.0.bottom" timestamp="1601007293151">
+    <state width="1554" height="245" key="GridCell.Tab.0.bottom" timestamp="1601052929529">
       <screen x="0" y="23" width="1920" height="996" />
     </state>
+    <state width="1554" height="245" key="GridCell.Tab.0.bottom/0.23.1920.1001@0.23.1920.1001" timestamp="1601049603985" />
+    <state width="1554" height="245" key="GridCell.Tab.0.bottom/0.23.1920.1002@0.23.1920.1002" timestamp="1601043361226" />
+    <state width="1554" height="245" key="GridCell.Tab.0.bottom/0.23.1920.1003@0.23.1920.1003" timestamp="1601044354252" />
     <state width="1554" height="245" key="GridCell.Tab.0.bottom/0.23.1920.994@0.23.1920.994" timestamp="1600999817888" />
     <state width="1554" height="245" key="GridCell.Tab.0.bottom/0.23.1920.995@0.23.1920.995" timestamp="1601005524149" />
-    <state width="1554" height="245" key="GridCell.Tab.0.bottom/0.23.1920.996@0.23.1920.996" timestamp="1601007293151" />
-    <state width="1554" height="245" key="GridCell.Tab.0.center" timestamp="1601007293150">
+    <state width="1554" height="245" key="GridCell.Tab.0.bottom/0.23.1920.996@0.23.1920.996" timestamp="1601052929529" />
+    <state width="1554" height="245" key="GridCell.Tab.0.bottom/0.23.1920.997@0.23.1920.997" timestamp="1601050748653" />
+    <state width="1554" height="245" key="GridCell.Tab.0.center" timestamp="1601052929529">
       <screen x="0" y="23" width="1920" height="996" />
     </state>
+    <state width="1554" height="245" key="GridCell.Tab.0.center/0.23.1920.1001@0.23.1920.1001" timestamp="1601049603984" />
+    <state width="1554" height="245" key="GridCell.Tab.0.center/0.23.1920.1002@0.23.1920.1002" timestamp="1601043361226" />
+    <state width="1554" height="245" key="GridCell.Tab.0.center/0.23.1920.1003@0.23.1920.1003" timestamp="1601044354252" />
     <state width="1554" height="245" key="GridCell.Tab.0.center/0.23.1920.994@0.23.1920.994" timestamp="1600999817887" />
     <state width="1554" height="245" key="GridCell.Tab.0.center/0.23.1920.995@0.23.1920.995" timestamp="1601005524148" />
-    <state width="1554" height="245" key="GridCell.Tab.0.center/0.23.1920.996@0.23.1920.996" timestamp="1601007293150" />
-    <state width="1554" height="245" key="GridCell.Tab.0.left" timestamp="1601007293150">
+    <state width="1554" height="245" key="GridCell.Tab.0.center/0.23.1920.996@0.23.1920.996" timestamp="1601052929529" />
+    <state width="1554" height="245" key="GridCell.Tab.0.center/0.23.1920.997@0.23.1920.997" timestamp="1601050748652" />
+    <state width="1554" height="245" key="GridCell.Tab.0.left" timestamp="1601052929528">
       <screen x="0" y="23" width="1920" height="996" />
     </state>
+    <state width="1554" height="245" key="GridCell.Tab.0.left/0.23.1920.1001@0.23.1920.1001" timestamp="1601049603984" />
+    <state width="1554" height="245" key="GridCell.Tab.0.left/0.23.1920.1002@0.23.1920.1002" timestamp="1601043361225" />
+    <state width="1554" height="245" key="GridCell.Tab.0.left/0.23.1920.1003@0.23.1920.1003" timestamp="1601044354252" />
     <state width="1554" height="245" key="GridCell.Tab.0.left/0.23.1920.994@0.23.1920.994" timestamp="1600999817886" />
     <state width="1554" height="245" key="GridCell.Tab.0.left/0.23.1920.995@0.23.1920.995" timestamp="1601005524148" />
-    <state width="1554" height="245" key="GridCell.Tab.0.left/0.23.1920.996@0.23.1920.996" timestamp="1601007293150" />
-    <state width="1554" height="245" key="GridCell.Tab.0.right" timestamp="1601007293151">
+    <state width="1554" height="245" key="GridCell.Tab.0.left/0.23.1920.996@0.23.1920.996" timestamp="1601052929528" />
+    <state width="1554" height="245" key="GridCell.Tab.0.left/0.23.1920.997@0.23.1920.997" timestamp="1601050748652" />
+    <state width="1554" height="245" key="GridCell.Tab.0.right" timestamp="1601052929529">
       <screen x="0" y="23" width="1920" height="996" />
     </state>
+    <state width="1554" height="245" key="GridCell.Tab.0.right/0.23.1920.1001@0.23.1920.1001" timestamp="1601049603985" />
+    <state width="1554" height="245" key="GridCell.Tab.0.right/0.23.1920.1002@0.23.1920.1002" timestamp="1601043361226" />
+    <state width="1554" height="245" key="GridCell.Tab.0.right/0.23.1920.1003@0.23.1920.1003" timestamp="1601044354252" />
     <state width="1554" height="245" key="GridCell.Tab.0.right/0.23.1920.994@0.23.1920.994" timestamp="1600999817887" />
     <state width="1554" height="245" key="GridCell.Tab.0.right/0.23.1920.995@0.23.1920.995" timestamp="1601005524149" />
-    <state width="1554" height="245" key="GridCell.Tab.0.right/0.23.1920.996@0.23.1920.996" timestamp="1601007293151" />
+    <state width="1554" height="245" key="GridCell.Tab.0.right/0.23.1920.996@0.23.1920.996" timestamp="1601052929529" />
+    <state width="1554" height="245" key="GridCell.Tab.0.right/0.23.1920.997@0.23.1920.997" timestamp="1601050748652" />
+    <state width="1554" height="303" key="GridCell.Tab.1.bottom" timestamp="1601050102805">
+      <screen x="0" y="23" width="1920" height="996" />
+    </state>
+    <state width="1554" height="303" key="GridCell.Tab.1.bottom/0.23.1920.1001@0.23.1920.1001" timestamp="1601049827964" />
+    <state width="1554" height="303" key="GridCell.Tab.1.bottom/0.23.1920.996@0.23.1920.996" timestamp="1601050102805" />
+    <state width="1554" height="303" key="GridCell.Tab.1.center" timestamp="1601050102805">
+      <screen x="0" y="23" width="1920" height="996" />
+    </state>
+    <state width="1554" height="303" key="GridCell.Tab.1.center/0.23.1920.1001@0.23.1920.1001" timestamp="1601049827963" />
+    <state width="1554" height="303" key="GridCell.Tab.1.center/0.23.1920.996@0.23.1920.996" timestamp="1601050102805" />
+    <state width="1554" height="303" key="GridCell.Tab.1.left" timestamp="1601050102805">
+      <screen x="0" y="23" width="1920" height="996" />
+    </state>
+    <state width="1554" height="303" key="GridCell.Tab.1.left/0.23.1920.1001@0.23.1920.1001" timestamp="1601049827963" />
+    <state width="1554" height="303" key="GridCell.Tab.1.left/0.23.1920.996@0.23.1920.996" timestamp="1601050102805" />
+    <state width="1554" height="303" key="GridCell.Tab.1.right" timestamp="1601050102805">
+      <screen x="0" y="23" width="1920" height="996" />
+    </state>
+    <state width="1554" height="303" key="GridCell.Tab.1.right/0.23.1920.1001@0.23.1920.1001" timestamp="1601049827963" />
+    <state width="1554" height="303" key="GridCell.Tab.1.right/0.23.1920.996@0.23.1920.996" timestamp="1601050102805" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/venv/tyit.py</url>
+          <line>365</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/venv/tyit.py</url>
+          <line>98</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -97,9 +97,14 @@ class Application(Frame):
         """Get the image from the Open menu and
             place it on hte screen"""
         # Show the user selected image
+        # set up orginal story frame
+        imageFrame = LabelFrame(self, text="Original Story")
+        imageFrame.grid(row=0, column=0, sticky="nsew")
+
         self.image = Image.open(self.fileName)
         self.photo = ImageTk.PhotoImage(self.image)
-        self.imglbl = Label(self, image=self.photo)
+        Canvas(imageFrame, bd=-1, width=self.photo.width(), height=self.photo.height())
+        self.imglbl = Label(imageFrame, image=self.photo)
         self.imglbl.grid(row=0, column=0, columnspan=4, sticky="nsew")
 
         print("Current Image Size: ", self.image.size)
@@ -272,6 +277,7 @@ class Application(Frame):
             return False
 
     # end def is_number(n):
+
 
     def sortPixels(self):
         """ Sorts the image pixels and writes
