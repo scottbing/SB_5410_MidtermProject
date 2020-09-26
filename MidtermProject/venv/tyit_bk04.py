@@ -5,13 +5,12 @@
 from tkinter import *
 from tkinter import filedialog
 from tkinter.filedialog import askopenfilename
-from PIL import Image, ImageDraw, ImageTk, ImageOps, ImageEnhance
+from PIL import Image, ImageDraw, ImageTk, ImageOps
 import tkinter.font as font
 from SortFunctions import selectionSort
 from SortFunctions import quickSortIterative
 from SearchFunctions import binarySearchSub
 from PixelFunctions import *
-import numpy as np
 import colorsys
 import os
 
@@ -205,19 +204,19 @@ class Application(Frame):
                     variable=self.is_reverse
                     ).grid(row=5, column=0, sticky=W)
 
-        # # create color check button
-        # self.is_color = BooleanVar()
-        # Checkbutton(self,
-        #             text="Color",
-        #             variable=self.is_color
-        #             ).grid(row=5, column=0, sticky=E)
-        #
-        # # create grayscale check button
-        # self.is_gray = BooleanVar()
-        # Checkbutton(self,
-        #             text="GrayScale",
-        #             variable=self.is_gray
-        #             ).grid(row=5, column=1, sticky=W)
+        # create color check button
+        self.is_color = BooleanVar()
+        Checkbutton(self,
+                    text="Color",
+                    variable=self.is_color
+                    ).grid(row=5, column=0, sticky=E)
+
+        # create grayscale check button
+        self.is_gray = BooleanVar()
+        Checkbutton(self,
+                    text="GrayScale",
+                    variable=self.is_gray
+                    ).grid(row=5, column=1, sticky=W)
 
         # create a CheckBox and text entry for a Tolerance
         # Tolerance setting button
@@ -236,33 +235,23 @@ class Application(Frame):
                     text="Brightness",
                     variable=self.is_bright
                     ).grid(row=7, column=0, sticky=W)
-        self.brightness_ent = Entry(self, width=8)
-        self.brightness_ent.grid(row=7, column=0, sticky=E)
+        self.tolerance_ent = Entry(self, width=8)
+        self.tolerance_ent.grid(row=7, column=0, sticky=E)
 
-        # create a filler
-        Label(self,
-              text="gt. 1 - Bright; lt. 1 Dark"
-              ).grid(row=7, column=1, sticky=W)
-
-        # create a CheckBox and text entry for a Contrast
-        # Contrast setting button
-        self.is_contrast = BooleanVar()
+        # create a CheckBox and text entry for a Sharpness
+        # Sharpness setting button
+        self.is_sharp = BooleanVar()
         Checkbutton(self,
                     text="Contrast",
-                    variable=self.is_contrast
+                    variable=self.is_sharp
                     ).grid(row=8, column=0, sticky=W)
-        self.contrast_ent = Entry(self, width=8)
-        self.contrast_ent.grid(row=8, column=0, sticky=E)
-
-        # create a filler
-        Label(self,
-              text="gt. 1 - more Contrast; lt. 1 less Contrast"
-              ).grid(row=8, column=1, sticky=W)
+        self.tolerance_ent = Entry(self, width=8)
+        self.tolerance_ent.grid(row=8, column=0, sticky=E)
 
         btnFont = font.Font(weight="bold")
         btnFont = font.Font(size=19)
 
-        # create a the sort pixels button
+        # create a the generate button
         self.sort_btn = Button(self,
                                    text="Sort Pixels",
                                    command=self.sortPixels,
@@ -271,19 +260,10 @@ class Application(Frame):
                                    highlightbackground='#3E4149',
                                    ).grid(row=9, column=0, sticky=W, padx=20, pady=5)
 
-        # create a the scramble pixels button
-        self.scramble_btn = Button(self,
-                               text="Scramble",
-                               command=self.scramblePixels,
-                               # bg='blue',
-                               # fg='#ffffff',
-                               highlightbackground='#3E4149',
-                               ).grid(row=10, column=0, sticky=W, padx=20, pady=5)
-
         # create a filler
         Label(self,
               text=" "
-              ).grid(row=11, column=0, sticky=W)
+              ).grid(row=10, column=0, sticky=W)
 
         # create a the generate button
         self.generate_btn = Button(self,
@@ -293,10 +273,9 @@ class Application(Frame):
                                    # fg='#ffffff',
                                    highlightbackground='#3E4149',
                                    font=btnFont
-                                   ).grid(row=12, column=1, sticky=NSEW, pady=10)
+                                   ).grid(row=10, column=1, sticky=NSEW, pady=10)
 
     # Check for numeric and -1-255
-    # Taken from:
     # https://stackoverflow.com/questions/31684082/validate-if-input-string-is-a-number-between-0-255-using-regex
     # numeric validation
     def is_number(self, n):
@@ -308,34 +287,6 @@ class Application(Frame):
 
     # end def is_number(n):
 
-    def scramblePixels(self):
-        """ Randomly scrambles the pixel values """
-        # read each pixel into memory as the image object im
-        im = Image.open(self.fileName)
-        pixels = storePixels(im)
-        print("stored")
-        # manipulate file name for save process
-        baseFile = self.fileName.split('/')
-        length = len(baseFile)
-        base = baseFile[len(baseFile) - 1]
-        print(baseFile[len(baseFile) - 1])
-        # Taken from:
-        # https: // stackoverflow.com / questions / 36468530 / changing - pixel - color - value - in -pil
-        rr, gg, bb = im.split()
-        rr = rr.point(lambda p: 0 if p == 0 else np.random.randint(256))
-        gg = gg.point(lambda p: 0 if p == 0 else np.random.randint(256))
-        bb = bb.point(lambda p: 0 if p == 0 else np.random.randint(256))
-        out_img = Image.merge("RGB", (rr, gg, bb))
-        out_img.getextrema()
-        out_img.show()
-
-        ### sort copy of pixels ###
-        sorted_pixels = pixels.copy()
-        quickSortIterative(sorted_pixels, 0, len(sorted_pixels) - 1, comparePixels)
-        print("sorted")
-        sorted_im = pixelsToImage(im, sorted_pixels)
-        sorted_im.save('sorted-' + base)
-        print("sorted-" + base + " saved")
 
     def sortPixels(self):
         """ Sorts the image pixels and writes
@@ -358,61 +309,9 @@ class Application(Frame):
         sorted_im.save('sorted-' + base)
         print("sorted-" + base + " saved")
 
-    def brightness(self):
-        """brightens or darkens the image"""
-        # get current image
-        im = Image.open(self.fileName)
-        # manipulate file name for save process
-        baseFile = self.fileName.split('/')
-        length = len(baseFile)
-        base = baseFile[len(baseFile) - 1]
-        print(baseFile[len(baseFile) - 1])
-
-        # image brightness enhancer
-        enhancer = ImageEnhance.Brightness(im)
-        factor = (float(self.brightness_ent.get()))
-        im_out = enhancer.enhance(factor)
-        if factor == 1:
-            im_out.save('brt_original-' + base)
-            print("file brt_original-" + base + " saved")
-        elif factor < 1:
-            im.save('brt_darkened-' + base)
-            print("file brt_darkened-" + base + " saved")
-        elif factor > 1:
-            im.save('brt_brightened-' + base)
-            print("file brt_brightened-" + base + " saved")
-
-    def constrast(self):
-        """sets the contrast factor for the image"""
-        # get current image
-        im = Image.open(self.fileName)
-        # manipulate file name for save process
-        baseFile = self.fileName.split('/')
-        length = len(baseFile)
-        base = baseFile[len(baseFile) - 1]
-        print(baseFile[len(baseFile) - 1])
-
-        # image contrast enhancer
-        enhancer = ImageEnhance.Contrast(im)
-        factor = (float(self.contrast_ent.get()))
-        im_out = enhancer.enhance(factor)
-        if factor == 1:
-            im_out.save('ctr_original-' + base)
-            print("file ctr_original-" + base + " saved")
-        elif factor < 1:
-            im.save('ctr_less-' + base)
-            print("file ctr_less-" + base + " saved")
-        elif factor > 1:
-            im.save('ctr_more-' + base)
-            print("file ctr_more-" + base + " saved")
-
-
-    def sharpness(self):
-        pass
-
     # reverse the image
     def reverse(self):
-        """converts an image ot grayscale"""
+        """coonverts an image ot grayscale"""
         # get current image
         im = Image.open(self.fileName)
         pixels, yiq_pixels = storePixels(im)  # store rgb pixels
@@ -522,10 +421,6 @@ class Application(Frame):
                 self.flip_horizontal()
         elif self.is_reverse.get() == True:
             self.reverse()
-        elif self.is_bright.get() == True:
-            self.brightness()
-        elif self.is_contrast.get() == True:
-            self.constrast()
 
     def processImage(self):
         """Porcesses the image based upon user
