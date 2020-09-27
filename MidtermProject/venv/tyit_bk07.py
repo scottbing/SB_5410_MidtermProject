@@ -94,32 +94,6 @@ class Application(Frame):
     #     else:
     #         self.reverse_btn.config(relief="sunken")
 
-    def clearScreen(self):
-        """Clears the screen"""
-
-        # clear checkboxes
-        self.is_resize = False
-        self.is_reverse = False
-        self.is_rotate = False
-        self.is_reverse = False
-        self.is_flip = False
-        self.is_horizontal = False
-        self.is_vertical = False
-        self.is_tolerant = False
-        self.is_bright = False
-        self.is_contrast = False
-        self.is_sharpness = False
-
-        # cleear text boxes
-        self.height_ent.delete(0, 'end')
-        self.width_ent.delete(0, 'end')
-        self.angle_ent.delete(0, 'end')
-        self.tolerance_ent.delete(0, 'end')
-        self.brightness_ent.delete(0, 'end')
-        self.contrast_ent.delete(0, 'end')
-        self.sharpness_ent.delete(0, 'end')
-
-
     # function to be called when mouse is clicked
     def getcoords(self, event):
         # outputting x and y coords to console
@@ -294,16 +268,6 @@ class Application(Frame):
               text=" "
               ).grid(row=12, column=0, sticky=W)
 
-        # create a the clear screen button
-        self.clear_btn = Button(self,
-                                text="Clear",
-                                command=self.clearScreen,
-                                # bg='blue',
-                                # fg='#ffffff',
-                                highlightbackground='#3E4149',
-                                font=btnFont
-                                ).grid(row=13, column=0, sticky=E, pady=10, padx=5)
-
         # create a the generate button
         self.generate_btn = Button(self,
                                    text="Generate",
@@ -312,7 +276,7 @@ class Application(Frame):
                                    # fg='#ffffff',
                                    highlightbackground='#3E4149',
                                    font=btnFont
-                                   ).grid(row=13, column=1, sticky=W, pady=10, padx=5)
+                                   ).grid(row=13, column=1, sticky=NSEW, pady=10)
 
 
     # Check for numeric and -1-255
@@ -404,7 +368,6 @@ class Application(Frame):
         elif factor > 1:
             im_out.save('brt_brightened-' + base)
             print("file brt_brightened-" + base + " saved")
-        self.clearScreen()
 
     def constrast(self):
         """sets the contrast factor for the image"""
@@ -429,7 +392,7 @@ class Application(Frame):
         elif factor > 1:
             im_out.save('ctr_more-' + base)
             print("file ctr_more-" + base + " saved")
-        self.clearScreen()
+
 
     def sharpness(self):
         """sets the sharpness factor for the image"""
@@ -454,7 +417,6 @@ class Application(Frame):
         elif factor > 1:
             im_out.save('shp_more-' + base)
             print("file shp_more-" + base + " saved")
-        self.clearScreen()
 
     # reverse the image
     def reverse(self):
@@ -471,7 +433,6 @@ class Application(Frame):
         # save reversed image
         im.save('reverse-' + base)
         print("file reverse-" + base + " saved")
-        self.clearScreen()
 
     # flip image on vertical axis
     def flip_vertical(self):
@@ -488,7 +449,6 @@ class Application(Frame):
         # save flipped image
         out.save('fl_vertical-' + base)
         print("file fl_vertical-" + base + " saved")
-        self.clearScreen()
 
     # flip image on horizontal axis
     def flip_horizontal(self):
@@ -505,7 +465,6 @@ class Application(Frame):
         # save flipped image
         out.save('fl_horizontal-' + base)
         print("file fl_horizontal-" + base + " saved")
-        self.clearScreen()
 
     # rotate an image
     def rotate(self):
@@ -528,7 +487,14 @@ class Application(Frame):
         # save rotated image
         out.save('rotated-' + base)
         print("file rotated-" + base + " saved")
-        self.clearScreen()
+
+        # def clearScreen():
+        #     top.delete("1.0", "end")
+        #     bottom.delete("1.0", "end")
+        #
+        #     # clear status bar
+        #     status['text'] = ""
+        #
 
     # resize an image
     def resize(self):
@@ -549,7 +515,6 @@ class Application(Frame):
         # save resized image
         out.save('resized-' + base)
         print("file resized-" + base + " saved")
-        self.clearScreen()
 
     # process user selections
     def processSelections(self):

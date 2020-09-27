@@ -94,32 +94,6 @@ class Application(Frame):
     #     else:
     #         self.reverse_btn.config(relief="sunken")
 
-    def clearScreen(self):
-        """Clears the screen"""
-
-        # clear checkboxes
-        self.is_resize = False
-        self.is_reverse = False
-        self.is_rotate = False
-        self.is_reverse = False
-        self.is_flip = False
-        self.is_horizontal = False
-        self.is_vertical = False
-        self.is_tolerant = False
-        self.is_bright = False
-        self.is_contrast = False
-        self.is_sharpness = False
-
-        # cleear text boxes
-        self.height_ent.delete(0, 'end')
-        self.width_ent.delete(0, 'end')
-        self.angle_ent.delete(0, 'end')
-        self.tolerance_ent.delete(0, 'end')
-        self.brightness_ent.delete(0, 'end')
-        self.contrast_ent.delete(0, 'end')
-        self.sharpness_ent.delete(0, 'end')
-
-
     # function to be called when mouse is clicked
     def getcoords(self, event):
         # outputting x and y coords to console
@@ -156,6 +130,24 @@ class Application(Frame):
 
     def create_widgets(self):
         """ Create and place screen widgets """
+
+        # # Show a default image
+        # self.image = Image.open('bakery.jpeg')
+        # self.photo = ImageTk.PhotoImage(self.image)
+        # self.imglbl = Label(self, image=self.photo)
+        # self.imglbl.grid(row=0, column=0, columnspan=4, sticky="nsew")
+        #
+        # print("Current Image Size: ", self.image.size)
+        #
+        # # this lines UNPACKS values
+        # # of variable a
+        # (h, w) = self.image.size
+        #
+        # # create a label and text entry for the name of a person
+        # Label(self,
+        #       text="Current Image Size: " + str(h) + "x" + str(w)
+        #       ).grid(row=1, column=0, sticky=W)
+
         # # create resize check button
         self.is_resize = BooleanVar()
         Checkbutton(self,
@@ -213,6 +205,20 @@ class Application(Frame):
                     variable=self.is_reverse
                     ).grid(row=5, column=0, sticky=W)
 
+        # # create color check button
+        # self.is_color = BooleanVar()
+        # Checkbutton(self,
+        #             text="Color",
+        #             variable=self.is_color
+        #             ).grid(row=5, column=0, sticky=E)
+        #
+        # # create grayscale check button
+        # self.is_gray = BooleanVar()
+        # Checkbutton(self,
+        #             text="GrayScale",
+        #             variable=self.is_gray
+        #             ).grid(row=5, column=1, sticky=W)
+
         # create a CheckBox and text entry for a Tolerance
         # Tolerance setting button
         self.is_tolerant = BooleanVar()
@@ -253,21 +259,6 @@ class Application(Frame):
               text="gt. 1 - more Contrast; lt. 1 less Contrast"
               ).grid(row=8, column=1, sticky=W)
 
-        # create a CheckBox and text entry for a Sharpness
-        # Sharpness setting button
-        self.is_sharpness = BooleanVar()
-        Checkbutton(self,
-                    text="Sharpness",
-                    variable=self.is_sharpness
-                    ).grid(row=9, column=0, sticky=W)
-        self.sharpness_ent = Entry(self, width=8)
-        self.sharpness_ent.grid(row=9, column=0, sticky=E)
-
-        # create a filler
-        Label(self,
-              text="gt. 1 - more Sharpness; lt. 1 less Sharpness"
-              ).grid(row=9, column=1, sticky=W)
-
         btnFont = font.Font(weight="bold")
         btnFont = font.Font(size=19)
 
@@ -278,7 +269,7 @@ class Application(Frame):
                                    # bg='blue',
                                    # fg='#ffffff',
                                    highlightbackground='#3E4149',
-                                   ).grid(row=10, column=0, sticky=W, padx=20, pady=5)
+                                   ).grid(row=9, column=0, sticky=W, padx=20, pady=5)
 
         # create a the scramble pixels button
         self.scramble_btn = Button(self,
@@ -287,22 +278,12 @@ class Application(Frame):
                                # bg='blue',
                                # fg='#ffffff',
                                highlightbackground='#3E4149',
-                               ).grid(row=11, column=0, sticky=W, padx=20, pady=5)
+                               ).grid(row=10, column=0, sticky=W, padx=20, pady=5)
 
         # create a filler
         Label(self,
               text=" "
-              ).grid(row=12, column=0, sticky=W)
-
-        # create a the clear screen button
-        self.clear_btn = Button(self,
-                                text="Clear",
-                                command=self.clearScreen,
-                                # bg='blue',
-                                # fg='#ffffff',
-                                highlightbackground='#3E4149',
-                                font=btnFont
-                                ).grid(row=13, column=0, sticky=E, pady=10, padx=5)
+              ).grid(row=11, column=0, sticky=W)
 
         # create a the generate button
         self.generate_btn = Button(self,
@@ -312,8 +293,7 @@ class Application(Frame):
                                    # fg='#ffffff',
                                    highlightbackground='#3E4149',
                                    font=btnFont
-                                   ).grid(row=13, column=1, sticky=W, pady=10, padx=5)
-
+                                   ).grid(row=12, column=1, sticky=NSEW, pady=10)
 
     # Check for numeric and -1-255
     # Taken from:
@@ -349,16 +329,13 @@ class Application(Frame):
         out_img.getextrema()
         out_img.show()
 
-        out_img.save('scrambled-' + base)
+        ### sort copy of pixels ###
+        sorted_pixels = pixels.copy()
+        quickSortIterative(sorted_pixels, 0, len(sorted_pixels) - 1, comparePixels)
+        print("sorted")
+        sorted_im = pixelsToImage(im, sorted_pixels)
+        sorted_im.save('sorted-' + base)
         print("sorted-" + base + " saved")
-
-        # ### sort copy of pixels ###
-        # sorted_pixels = pixels.copy()
-        # quickSortIterative(sorted_pixels, 0, len(sorted_pixels) - 1, comparePixels)
-        # print("sorted")
-        # sorted_im = pixelsToImage(im, sorted_pixels)
-        # sorted_im.save('sorted-' + base)
-        # print("sorted-" + base + " saved")
 
     def sortPixels(self):
         """ Sorts the image pixels and writes
@@ -399,12 +376,11 @@ class Application(Frame):
             im_out.save('brt_original-' + base)
             print("file brt_original-" + base + " saved")
         elif factor < 1:
-            im_out.save('brt_darkened-' + base)
+            im.save('brt_darkened-' + base)
             print("file brt_darkened-" + base + " saved")
         elif factor > 1:
-            im_out.save('brt_brightened-' + base)
+            im.save('brt_brightened-' + base)
             print("file brt_brightened-" + base + " saved")
-        self.clearScreen()
 
     def constrast(self):
         """sets the contrast factor for the image"""
@@ -424,44 +400,22 @@ class Application(Frame):
             im_out.save('ctr_original-' + base)
             print("file ctr_original-" + base + " saved")
         elif factor < 1:
-            im_out.save('ctr_less-' + base)
+            im.save('ctr_less-' + base)
             print("file ctr_less-" + base + " saved")
         elif factor > 1:
-            im_out.save('ctr_more-' + base)
+            im.save('ctr_more-' + base)
             print("file ctr_more-" + base + " saved")
-        self.clearScreen()
+
 
     def sharpness(self):
-        """sets the sharpness factor for the image"""
-        # get current image
-        im = Image.open(self.fileName)
-        # manipulate file name for save process
-        baseFile = self.fileName.split('/')
-        length = len(baseFile)
-        base = baseFile[len(baseFile) - 1]
-        print(baseFile[len(baseFile) - 1])
-
-        # image contrast enhancer
-        enhancer = ImageEnhance.Sharpness(im)
-        factor = (float(self.sharpness_ent.get()))
-        im_out = enhancer.enhance(factor)
-        if factor == 1:
-            im_out.save('shp_original-' + base)
-            print("file shp_original-" + base + " saved")
-        elif factor < 1:
-            im_out.save('shp_less-' + base)
-            print("file shp_less-" + base + " saved")
-        elif factor > 1:
-            im_out.save('shp_more-' + base)
-            print("file shp_more-" + base + " saved")
-        self.clearScreen()
+        pass
 
     # reverse the image
     def reverse(self):
         """converts an image ot grayscale"""
         # get current image
         im = Image.open(self.fileName)
-        pixels = storePixels(im)  # store rgb pixels
+        pixels, yiq_pixels = storePixels(im)  # store rgb pixels
         # manipulate file name for save process
         baseFile = self.fileName.split('/')
         length = len(baseFile)
@@ -471,7 +425,6 @@ class Application(Frame):
         # save reversed image
         im.save('reverse-' + base)
         print("file reverse-" + base + " saved")
-        self.clearScreen()
 
     # flip image on vertical axis
     def flip_vertical(self):
@@ -488,7 +441,6 @@ class Application(Frame):
         # save flipped image
         out.save('fl_vertical-' + base)
         print("file fl_vertical-" + base + " saved")
-        self.clearScreen()
 
     # flip image on horizontal axis
     def flip_horizontal(self):
@@ -505,7 +457,6 @@ class Application(Frame):
         # save flipped image
         out.save('fl_horizontal-' + base)
         print("file fl_horizontal-" + base + " saved")
-        self.clearScreen()
 
     # rotate an image
     def rotate(self):
@@ -528,7 +479,14 @@ class Application(Frame):
         # save rotated image
         out.save('rotated-' + base)
         print("file rotated-" + base + " saved")
-        self.clearScreen()
+
+        # def clearScreen():
+        #     top.delete("1.0", "end")
+        #     bottom.delete("1.0", "end")
+        #
+        #     # clear status bar
+        #     status['text'] = ""
+        #
 
     # resize an image
     def resize(self):
@@ -549,7 +507,6 @@ class Application(Frame):
         # save resized image
         out.save('resized-' + base)
         print("file resized-" + base + " saved")
-        self.clearScreen()
 
     # process user selections
     def processSelections(self):
@@ -569,8 +526,6 @@ class Application(Frame):
             self.brightness()
         elif self.is_contrast.get() == True:
             self.constrast()
-        elif self.is_sharpness.get() == True:
-            self.sharpness()
 
     def processImage(self):
         """Porcesses the image based upon user
