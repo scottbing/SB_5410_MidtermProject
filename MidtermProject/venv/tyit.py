@@ -5,7 +5,7 @@
 from tkinter import *
 from tkinter import filedialog
 from tkinter.filedialog import askopenfilename
-from PIL import Image, ImageDraw, ImageTk, ImageOps, ImageEnhance
+from PIL import Image, ImageDraw, ImageTk, ImageOps, ImageEnhance, ImageFont
 import tkinter.font as font
 from SortFunctions import selectionSort
 from SortFunctions import quickSortIterative
@@ -289,10 +289,28 @@ class Application(Frame):
                                highlightbackground='#3E4149',
                                ).grid(row=11, column=0, sticky=W, padx=20, pady=5)
 
+        # create a thumbnail image button
+        self.thumbnail_btn = Button(self,
+                                    text="Thumbnail",
+                                    command=self.thumbnail,
+                                    # bg='blue',
+                                    # fg='#ffffff',
+                                    highlightbackground='#3E4149',
+                                    ).grid(row=13, column=0, sticky=W, padx=20, pady=5)
+
+        # create a thumbnail image button
+        self.watermark_btn = Button(self,
+                                    text="Watermark",
+                                    command=self.watermark,
+                                    # bg='blue',
+                                    # fg='#ffffff',
+                                    highlightbackground='#3E4149',
+                                    ).grid(row=14, column=0, sticky=W, padx=20, pady=5)
+
         # create a filler
         Label(self,
               text=" "
-              ).grid(row=12, column=0, sticky=W)
+              ).grid(row=15, column=0, sticky=W)
 
         # create a the clear screen button
         self.clear_btn = Button(self,
@@ -302,7 +320,7 @@ class Application(Frame):
                                 # fg='#ffffff',
                                 highlightbackground='#3E4149',
                                 font=btnFont
-                                ).grid(row=13, column=0, sticky=E, pady=10, padx=5)
+                                ).grid(row=16, column=0, sticky=E, pady=10, padx=5)
 
         # create a the generate button
         self.generate_btn = Button(self,
@@ -312,7 +330,7 @@ class Application(Frame):
                                    # fg='#ffffff',
                                    highlightbackground='#3E4149',
                                    font=btnFont
-                                   ).grid(row=13, column=1, sticky=W, pady=10, padx=5)
+                                   ).grid(row=16, column=1, sticky=W, pady=10, padx=5)
 
 
     # Check for numeric and -1-255
@@ -327,6 +345,74 @@ class Application(Frame):
             return False
 
     # end def is_number(n):
+
+    def watermark(self):
+        # Taken from https://medium.com/analytics-vidhya/some-interesting-tricks-in-python-pillow-8fe5acce6084
+        """mark the picture with a watermark"""
+        # open image to apply watermark to
+        im = Image.open(self.fileName)
+        # manipulate file name for save process
+        baseFile = self.fileName.split('/')
+        length = len(baseFile)
+        base = baseFile[len(baseFile) - 1]
+        print(baseFile[len(baseFile) - 1])
+        im.convert("RGB")
+        # get image size
+        im_width, im_height = im.size
+        # 5 by 4 water mark grid
+        wm_size = (int(im_width * 0.20), int(im_height * 0.25))
+        wm_txt = Image.new("RGBA", wm_size, (255, 255, 255, 0))
+        # set text size, 1:40 of the image width
+        font_size = int(im_width / 40)
+        # load font e.g. gotham-bold.ttf
+        #font = ImageFont.load_default()
+        #font = ImageFont.truetype("arialbd.ttf", 12, encoding="unic")
+        font = ImageFont.truetype('/Library/Fonts/Arial.ttf', 25)
+
+        d = ImageDraw.Draw(wm_txt)
+        wm_text = "Scott Bing"
+        # centralize text
+        left = (wm_size[0] - font.getsize(wm_text)[0]) / 2
+        top = (wm_size[1] - font.getsize(wm_text)[1]) / 2
+        # RGBA(0, 0, 0, alpha) is black
+        # alpha channel specifies the opacity for a colour
+        alpha = 75
+        # write text on blank wm_text image
+        d.text((left, top), wm_text, fill=(0, 0, 0, alpha), font=font)
+        # uncomment to rotate watermark text
+        # wm_txt = wm_txt.rotate(15,  expand=1)
+        # wm_txt = wm_txt.resize(wm_size, Image.ANTIALIAS)
+        for i in range(0, im_width, wm_txt.size[0]):
+            for j in range(0, im_height, wm_txt.size[1]):
+                im.paste(wm_txt, (i, j), wm_txt)
+
+        im.save('watermark-' + base)
+        print("file watermark-" + base + " saved")
+
+        self.clearScreen()
+
+    def thumbnail(self):
+        # Taken from https://medium.com/analytics-vidhya/some-interesting-tricks-in-python-pillow-8fe5acce6084
+        """make a thumbnail from the originally user
+            selected image"""
+        im = Image.open(self.fileName)
+        # manipulate file name for save process
+        baseFile = self.fileName.split('/')
+        length = len(baseFile)
+        base = baseFile[len(baseFile) - 1]
+        print(baseFile[len(baseFile) - 1])
+        # set the maximum width and height for the thumbnail
+        max_thumbnail_size = (50, 50)
+        # applying size for thumbnail
+        im.thumbnail(max_thumbnail_size)
+        # creating thumbnail
+        im.save('thumbnail-' + base)
+        print("file thumbnail-" + base + " saved")
+
+        self.clearScreen()
+
+    # show image in preview
+        im.show()
 
     def scramblePixels(self):
         """ Randomly scrambles the pixel values """
@@ -351,14 +437,6 @@ class Application(Frame):
 
         out_img.save('scrambled-' + base)
         print("sorted-" + base + " saved")
-
-        # ### sort copy of pixels ###
-        # sorted_pixels = pixels.copy()
-        # quickSortIterative(sorted_pixels, 0, len(sorted_pixels) - 1, comparePixels)
-        # print("sorted")
-        # sorted_im = pixelsToImage(im, sorted_pixels)
-        # sorted_im.save('sorted-' + base)
-        # print("sorted-" + base + " saved")
 
     def sortPixels(self):
         """ Sorts the image pixels and writes
