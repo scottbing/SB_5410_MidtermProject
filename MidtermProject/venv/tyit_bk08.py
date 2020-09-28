@@ -192,27 +192,17 @@ class Application(Frame):
                     variable=self.is_flip
                     ).grid(row=4, column=0, sticky=W)
 
-        self.flipValue = IntVar()
+        self.flipValue = tk.IntVar()
 
-        # self.is_vertical = Radiobutton(self,
-        #                                text='Verical',
-        #                                variable=self.flipValue, value=True
-        #                                 ).grid(row=4, column=0, sticky=E)
-        #
-        # self.is_horizontal = Radiobutton(self,
-        #                                  text='Horizontal',
-        #                                  variable=self.flipValue, value=True
-        #                                  ).grid(row=4, column=1, sticky=W)
+        self.is_vertical = Radiobutton(self,
+                                       text='Verical',
+                                       variable=self.flipValue, value=1
+                                        ).grid(column=4, row=1, sticky=E)
 
-        Radiobutton(self,
-                    text='Vertical',
-                    variable=self.flipValue, value=1
-                    ).grid(row=4, column=0, sticky=E)
-
-        Radiobutton(self,
-                    text='Horizontal',
-                    variable=self.flipValue, value=2
-                    ).grid(row=4, column=1, sticky=W)
+        self.is_horizontal = Radiobutton(self,
+                                         text='Horizontal',
+                                         variable=self.flipValue, value=2
+                                         ).grid(column=4, row=2, sticky=W)
 
         # # create vertical check button
         # self.is_vertical = BooleanVar()
@@ -659,9 +649,9 @@ class Application(Frame):
         elif self.is_rotate.get() == True:
             self.rotate()
         elif self.is_flip.get() == True:
-            if self.flipValue.get() == 1:
+            if self.is_vertical.get() == True:
                 self.flip_vertical()
-            elif self.flipValue.get() == 2:
+            elif self.is_horizontal.get() == True:
                 self.flip_horizontal()
         elif self.is_reverse.get() == True:
             self.reverse()

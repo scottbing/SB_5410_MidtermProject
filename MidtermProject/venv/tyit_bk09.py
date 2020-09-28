@@ -192,41 +192,19 @@ class Application(Frame):
                     variable=self.is_flip
                     ).grid(row=4, column=0, sticky=W)
 
-        self.flipValue = IntVar()
-
-        # self.is_vertical = Radiobutton(self,
-        #                                text='Verical',
-        #                                variable=self.flipValue, value=True
-        #                                 ).grid(row=4, column=0, sticky=E)
-        #
-        # self.is_horizontal = Radiobutton(self,
-        #                                  text='Horizontal',
-        #                                  variable=self.flipValue, value=True
-        #                                  ).grid(row=4, column=1, sticky=W)
-
-        Radiobutton(self,
-                    text='Vertical',
-                    variable=self.flipValue, value=1
+        # create vertical check button
+        self.is_vertical = BooleanVar()
+        Checkbutton(self,
+                    text="Vertical",
+                    variable=self.is_vertical
                     ).grid(row=4, column=0, sticky=E)
 
-        Radiobutton(self,
-                    text='Horizontal',
-                    variable=self.flipValue, value=2
+        # create horizontal check button
+        self.is_horizontal = BooleanVar()
+        Checkbutton(self,
+                    text="Horizontal",
+                    variable=self.is_horizontal
                     ).grid(row=4, column=1, sticky=W)
-
-        # # create vertical check button
-        # self.is_vertical = BooleanVar()
-        # Checkbutton(self,
-        #             text="Vertical",
-        #             variable=self.is_vertical
-        #             ).grid(row=4, column=0, sticky=E)
-        #
-        # # create horizontal check button
-        # self.is_horizontal = BooleanVar()
-        # Checkbutton(self,
-        #             text="Horizontal",
-        #             variable=self.is_horizontal
-        #             ).grid(row=4, column=1, sticky=W)
 
         # Reverse image button
         self.is_reverse = BooleanVar()
@@ -659,9 +637,9 @@ class Application(Frame):
         elif self.is_rotate.get() == True:
             self.rotate()
         elif self.is_flip.get() == True:
-            if self.flipValue.get() == 1:
+            if self.is_vertical.get() == True:
                 self.flip_vertical()
-            elif self.flipValue.get() == 2:
+            elif self.is_horizontal.get() == True:
                 self.flip_horizontal()
         elif self.is_reverse.get() == True:
             self.reverse()
