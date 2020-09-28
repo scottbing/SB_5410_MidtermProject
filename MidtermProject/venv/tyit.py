@@ -68,7 +68,8 @@ class Application(Frame):
         menu.add_cascade(label="Help", menu=helpMenu)
 
         self.grid()
-        self.create_widgets()
+        self.create_initial_screen()
+        #self.create_widgets()
 
     def openFile(self):
         """Process the Open File Menu"""
@@ -76,6 +77,9 @@ class Application(Frame):
         print(self.fileName)
 
         self.putImage(self.fileName)
+
+        # open the application frame
+        self.create_widgets()
 
     # def exitProgram(self):
     #     exit()
@@ -96,7 +100,6 @@ class Application(Frame):
 
     def clearScreen(self):
         """Clears the screen"""
-
         # clear checkboxes
         self.is_resize.set(False)
         self.is_reverse.set(False)
@@ -113,14 +116,14 @@ class Application(Frame):
         self.width_ent.delete(0, 'end')
         self.angle_ent.delete(0, 'end')
         self.tolerance_ent.delete(0, 'end')
-        self.brightness_ent.delete(0, 'end')
-        self.contrast_ent.delete(0, 'end')
-        self.sharpness_ent.delete(0, 'end')
 
         # deselect radio buttons
         self.flipValue.set(None)
-        # self.is_vertical.set(3)
-        # self.is_horizontal.set(3)
+
+        # initialize sliders
+        self.bright_value.set(1.0)
+        self.contrast_value.set(1.0)
+        self.sharpness_value.set(1.0)
 
     # function to be called when mouse is clicked
     def getcoords(self, event):
@@ -155,6 +158,17 @@ class Application(Frame):
         Label(self,
               text="Current Image Size: " + str(h) + "x" + str(w)
               ).grid(row=1, column=0, sticky=W)
+
+    def create_initial_screen(self):
+        self.lblFont = font.Font(weight="bold")
+        self.lblFont = font.Font(size=16)
+
+
+
+        Label(self,
+              text="Use the 'File -> Open' menu above to select an image file to process:",
+              font=self.lblFont
+              ).grid(row=0, column=0, sticky=NSEW, pady=7)
 
     def create_widgets(self):
         """ Create and place screen widgets """
@@ -196,16 +210,6 @@ class Application(Frame):
 
         self.flipValue = IntVar()
 
-        # self.is_vertical = Radiobutton(self,
-        #                                text='Verical',
-        #                                variable=self.flipValue, value=True
-        #                                 ).grid(row=4, column=0, sticky=E)
-        #
-        # self.is_horizontal = Radiobutton(self,
-        #                                  text='Horizontal',
-        #                                  variable=self.flipValue, value=True
-        #                                  ).grid(row=4, column=1, sticky=W)
-
         self.is_vertical = Radiobutton(self,
                     text='Vertical',
                     variable=self.flipValue, value=1
@@ -240,12 +244,19 @@ class Application(Frame):
                     text="Brightness",
                     variable=self.is_bright
                     ).grid(row=7, column=0, sticky=W)
-        self.brightness_ent = Entry(self, width=8)
-        self.brightness_ent.grid(row=7, column=0, sticky=E)
+
+        self.bright_value = DoubleVar()
+        Scale(self,
+              variable=self.bright_value,
+              from_ = 0, to = 2,
+              resolution=0.5,
+              orient = HORIZONTAL
+              ).grid(row=7, column=0, sticky=E)
+        self.bright_value.set(1.0)
 
         # create a filler
         Label(self,
-              text="gt. 1 - Bright; lt. 1 Dark"
+              text="1 - original; gt. 1 - Bright; lt. 1 Dark"
               ).grid(row=7, column=1, sticky=W)
 
         # create a CheckBox and text entry for a Contrast
@@ -255,12 +266,19 @@ class Application(Frame):
                     text="Contrast",
                     variable=self.is_contrast
                     ).grid(row=8, column=0, sticky=W)
-        self.contrast_ent = Entry(self, width=8)
-        self.contrast_ent.grid(row=8, column=0, sticky=E)
+
+        self.contrast_value = DoubleVar()
+        Scale(self,
+              variable=self.contrast_value,
+              from_=0, to=2,
+              resolution=0.5,
+              orient=HORIZONTAL
+              ).grid(row=8, column=0, sticky=E)
+        self.contrast_value.set(1.0)
 
         # create a filler
         Label(self,
-              text="gt. 1 - more Contrast; lt. 1 less Contrast"
+              text="1 - original; gt. 1 - more Contrast; lt. 1 less Contrast"
               ).grid(row=8, column=1, sticky=W)
 
         # create a CheckBox and text entry for a Sharpness
@@ -270,12 +288,19 @@ class Application(Frame):
                     text="Sharpness",
                     variable=self.is_sharpness
                     ).grid(row=9, column=0, sticky=W)
-        self.sharpness_ent = Entry(self, width=8)
-        self.sharpness_ent.grid(row=9, column=0, sticky=E)
+
+        self.sharpness_value = DoubleVar()
+        Scale(self,
+              variable=self.sharpness_value,
+              from_=0, to=2,
+              resolution=0.5,
+              orient=HORIZONTAL
+              ).grid(row=9, column=0, sticky=E)
+        self.sharpness_value.set(1.0)
 
         # create a filler
         Label(self,
-              text="gt. 1 - more Sharpness; lt. 1 less Sharpness"
+              text="1 - original; gt. 1 - more Sharpness; lt. 1 less Sharpness"
               ).grid(row=9, column=1, sticky=W)
 
         btnFont = font.Font(weight="bold")
@@ -481,7 +506,7 @@ class Application(Frame):
 
         # image brightness enhancer
         enhancer = ImageEnhance.Brightness(im)
-        factor = (float(self.brightness_ent.get()))
+        factor = (float(self.bright_value.get()))
         im_out = enhancer.enhance(factor)
         if factor == 1:
             im_out.save('brt_original-' + base)
@@ -506,7 +531,7 @@ class Application(Frame):
 
         # image contrast enhancer
         enhancer = ImageEnhance.Contrast(im)
-        factor = (float(self.contrast_ent.get()))
+        factor = (float(self.contrast_value.get()))
         im_out = enhancer.enhance(factor)
         if factor == 1:
             im_out.save('ctr_original-' + base)
@@ -531,7 +556,7 @@ class Application(Frame):
 
         # image contrast enhancer
         enhancer = ImageEnhance.Sharpness(im)
-        factor = (float(self.sharpness_ent.get()))
+        factor = (float(self.sharpness_value.get()))
         im_out = enhancer.enhance(factor)
         if factor == 1:
             im_out.save('shp_original-' + base)

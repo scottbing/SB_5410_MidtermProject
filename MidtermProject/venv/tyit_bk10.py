@@ -68,8 +68,7 @@ class Application(Frame):
         menu.add_cascade(label="Help", menu=helpMenu)
 
         self.grid()
-        self.create_initial_screen()
-        #self.create_widgets()
+        self.create_widgets()
 
     def openFile(self):
         """Process the Open File Menu"""
@@ -77,9 +76,6 @@ class Application(Frame):
         print(self.fileName)
 
         self.putImage(self.fileName)
-
-        # open the application frame
-        self.create_widgets()
 
     # def exitProgram(self):
     #     exit()
@@ -116,6 +112,9 @@ class Application(Frame):
         self.width_ent.delete(0, 'end')
         self.angle_ent.delete(0, 'end')
         self.tolerance_ent.delete(0, 'end')
+        # self.brightness_ent.delete(0, 'end')
+        # self.contrast_ent.delete(0, 'end')
+        # self.sharpness_ent.delete(0, 'end')
 
         # deselect radio buttons
         self.flipValue.set(None)
@@ -158,17 +157,6 @@ class Application(Frame):
         Label(self,
               text="Current Image Size: " + str(h) + "x" + str(w)
               ).grid(row=1, column=0, sticky=W)
-
-    def create_initial_screen(self):
-        self.lblFont = font.Font(weight="bold")
-        self.lblFont = font.Font(size=16)
-
-
-
-        Label(self,
-              text="Use the 'File -> Open' menu above to select an image file to process:",
-              font=self.lblFont
-              ).grid(row=0, column=0, sticky=NSEW, pady=7)
 
     def create_widgets(self):
         """ Create and place screen widgets """
@@ -244,6 +232,8 @@ class Application(Frame):
                     text="Brightness",
                     variable=self.is_bright
                     ).grid(row=7, column=0, sticky=W)
+        # self.brightness_ent = Entry(self, width=8)
+        # self.brightness_ent.grid(row=7, column=0, sticky=E)
 
         self.bright_value = DoubleVar()
         Scale(self,
@@ -266,6 +256,8 @@ class Application(Frame):
                     text="Contrast",
                     variable=self.is_contrast
                     ).grid(row=8, column=0, sticky=W)
+        # self.contrast_ent = Entry(self, width=8)
+        # self.contrast_ent.grid(row=8, column=0, sticky=E)
 
         self.contrast_value = DoubleVar()
         Scale(self,
@@ -288,6 +280,8 @@ class Application(Frame):
                     text="Sharpness",
                     variable=self.is_sharpness
                     ).grid(row=9, column=0, sticky=W)
+        # self.sharpness_ent = Entry(self, width=8)
+        # self.sharpness_ent.grid(row=9, column=0, sticky=E)
 
         self.sharpness_value = DoubleVar()
         Scale(self,
