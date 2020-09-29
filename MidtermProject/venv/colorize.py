@@ -9,7 +9,7 @@ def distance2(color1, color2):
     return (r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2
 
 color_to_change = (255, 0, 0)
-threshold = 220
+threshold = 175
 
 # Load image:
 input_image = Image.open("sunflower.jpeg")

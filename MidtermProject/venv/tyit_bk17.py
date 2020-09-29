@@ -492,14 +492,6 @@ class Application(Frame):
                                    font=self.lblFont
                                    ).grid(row=5, column=0, sticky=E, pady=10, padx=5)
 
-        self.cerr2show = StringVar()
-        Label(self.colorFrame,
-              textvariable=self.cerr2show,
-              foreground="red",
-              font=self.errFont,
-              wraplength=200
-              ).grid(row=6, column=0, sticky=NSEW, pady=4)
-
     # Square distance between 2 colors
     def distance2(self, color1, color2):
         r1, g1, b1 = color1
@@ -509,7 +501,6 @@ class Application(Frame):
     def processColorize(self):
         """ Adds a user selected color to the image """
         # read each pixel into memory as the image object im
-        err = False
         im = Image.open(self.fileName)
         pixels = im.load()
         #pixels = storePixels(im)
@@ -530,32 +521,27 @@ class Application(Frame):
         blue = (int(self.blue_value.get()))
         color_to_change = (red, green, blue)
 
-        # check threshold
-        try:
-            t = int(self.tolerance_ent.get())
-        except Exception as e:
-            err = True
-            self.cerr2show.set("Colorize Tolerance value is missing or invalid")
+        # get tolerance value
+        threshold = (int(self.tolerance_ent.get()))
 
-        if err == False:
-            # get tolerance value
-            threshold = (int(self.tolerance_ent.get()))
+        # Generate image
+        for x in range(im.width):
+            for y in range(im.height):
+                r, g, b = pixels[x, y]
+                if self.distance2(color_to_change, pixels[x, y]) < threshold ** 2:
+                    # r = int(r * .5)
+                    # g = int(g * 1.25)
+                    # b = int(b * .5)
+                    r = int(r * (red/255))
+                    g = int(g * (green/255))
+                    b = int(b * (blue/255))
+                draw.point((x, y), (r, g, b))
 
-            # Generate image
-            for x in range(im.width):
-                for y in range(im.height):
-                    r, g, b = pixels[x, y]
-                    if self.distance2(color_to_change, pixels[x, y]) < threshold ** 2:
-                        r = int(r * (red/255))
-                        g = int(g * (green/255))
-                        b = int(b * (blue/255))
-                    draw.point((x, y), (r, g, b))
+        out.save("output.png")
+        out.save('colorized-' + base)
+        print("file colorized-" + base + " saved")
 
-            out.save("output.png")
-            out.save('colorized-' + base)
-            print("file colorized-" + base + " saved")
-
-            self.colorFrame.destroy()
+        self.colorFrame.destroy()
 
     def scramblePixels(self):
         """ Randomly scrambles the pixel values """
