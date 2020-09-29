@@ -483,52 +483,7 @@ class Application(Frame):
                                    font=self.lblFont
                                    ).grid(row=5, column=0, sticky=E, pady=10, padx=5)
 
-    # Square distance between 2 colors
-    def distance2(self, color1, color2):
-        r1, g1, b1 = color1
-        r2, g2, b2 = color2
-        return (r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2
-
     def processColorize(self):
-        """ Adds a user selected color to the image """
-        # read each pixel into memory as the image object im
-        im = Image.open(self.fileName)
-        pixels = im.load()
-        #pixels = storePixels(im)
-        print("stored")
-        # manipulate file name for save process
-        baseFile = self.fileName.split('/')
-        length = len(baseFile)
-        base = baseFile[len(baseFile) - 1]
-        print(baseFile[len(baseFile) - 1])
-
-        # Create output image
-        out = Image.new("RGB", im.size)
-        draw = ImageDraw.Draw(out)
-
-        # get select color
-        red = (int(self.red_value.get()))
-        green = (int(self.green_value.get()))
-        blue = (int(self.blue_value.get()))
-        color_to_change = (red, green, blue)
-
-        # get tolerance value
-        threshold = (int(self.tolerance_ent.get()))
-
-        # Generate image
-        for x in range(im.width):
-            for y in range(im.height):
-                r, g, b = pixels[x, y]
-                if self.distance2(color_to_change, pixels[x, y]) < threshold ** 2:
-                    r = int(r * .5)
-                    g = int(g * 1.25)
-                    b = int(b * .5)
-                draw.point((x, y), (r, g, b))
-
-        out.save("output.png")
-        out.save('colorized-' + base)
-        print("file colorized-" + base + " saved")
-
         self.colorFrame.destroy()
 
     def scramblePixels(self):

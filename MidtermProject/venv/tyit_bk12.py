@@ -430,23 +430,23 @@ class Application(Frame):
         self.lblFont = font.Font(weight="bold")
         self.lblFont = font.Font(size=16)
 
-        self.colorFrame = Toplevel(self)
-        self.colorFrame.wm_title("Colorize Settings")
+        colorFrame = Toplevel(self)
+        colorFrame.wm_title("Colorize Settings")
 
-        Label(self.colorFrame,
+        Label(colorFrame,
               text="Select a Tolerance value and a color using the RGB sliders and press Generate.",
               wraplength=200,
               font=self.lblFont
               ).grid(row=0, column=0, sticky=W, padx=10, pady=10)
 
-        Label(self.colorFrame,
+        Label(colorFrame,
               text="Tolerance:"
               ).grid(row=1, column=0, sticky=W, padx=10, pady=10)
-        self.tolerance_ent = Entry(self.colorFrame, width=10)
+        self.tolerance_ent = Entry(colorFrame, width=10)
         self.tolerance_ent.grid(row=1, column=0, sticky=E, padx=10, pady=10)
 
         self.red_value = DoubleVar()
-        Scale(self.colorFrame,
+        Scale(colorFrame,
               variable=self.red_value,
               from_=0, to=255,
               resolution=1,
@@ -456,7 +456,7 @@ class Application(Frame):
         self.red_value.set(0)
 
         self.green_value = DoubleVar()
-        Scale(self.colorFrame,
+        Scale(colorFrame,
               variable=self.green_value,
               from_=0, to=255,
               resolution=1,
@@ -466,7 +466,7 @@ class Application(Frame):
         self.green_value.set(0)
 
         self.blue_value = DoubleVar()
-        Scale(self.colorFrame,
+        Scale(colorFrame,
               variable=self.blue_value,
               from_=0, to=255,
               resolution=1,
@@ -475,61 +475,21 @@ class Application(Frame):
               ).grid(row=4, column=0, sticky=NSEW, padx=10, pady=10)
         self.blue_value.set(0)
 
+
+
         # create a the generate button
-        self.gen_colorize_btn = Button(self.colorFrame,
+        self.gen_colorize_btn = Button(colorFrame,
                                    text="Generate",
                                    command=self.processColorize,
                                    highlightbackground='#3E4149',
                                    font=self.lblFont
                                    ).grid(row=5, column=0, sticky=E, pady=10, padx=5)
 
-    # Square distance between 2 colors
-    def distance2(self, color1, color2):
-        r1, g1, b1 = color1
-        r2, g2, b2 = color2
-        return (r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2
+
+
 
     def processColorize(self):
-        """ Adds a user selected color to the image """
-        # read each pixel into memory as the image object im
-        im = Image.open(self.fileName)
-        pixels = im.load()
-        #pixels = storePixels(im)
-        print("stored")
-        # manipulate file name for save process
-        baseFile = self.fileName.split('/')
-        length = len(baseFile)
-        base = baseFile[len(baseFile) - 1]
-        print(baseFile[len(baseFile) - 1])
-
-        # Create output image
-        out = Image.new("RGB", im.size)
-        draw = ImageDraw.Draw(out)
-
-        # get select color
-        red = (int(self.red_value.get()))
-        green = (int(self.green_value.get()))
-        blue = (int(self.blue_value.get()))
-        color_to_change = (red, green, blue)
-
-        # get tolerance value
-        threshold = (int(self.tolerance_ent.get()))
-
-        # Generate image
-        for x in range(im.width):
-            for y in range(im.height):
-                r, g, b = pixels[x, y]
-                if self.distance2(color_to_change, pixels[x, y]) < threshold ** 2:
-                    r = int(r * .5)
-                    g = int(g * 1.25)
-                    b = int(b * .5)
-                draw.point((x, y), (r, g, b))
-
-        out.save("output.png")
-        out.save('colorized-' + base)
-        print("file colorized-" + base + " saved")
-
-        self.colorFrame.destroy()
+        pass
 
     def scramblePixels(self):
         """ Randomly scrambles the pixel values """

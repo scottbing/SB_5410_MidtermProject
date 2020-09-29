@@ -81,9 +81,22 @@ class Application(Frame):
         # open the application frame
         self.create_widgets()
 
+    # def exitProgram(self):
+    #     exit()
+
     def donothing(self):
         """Placeholder for inactive menu items"""
         pass
+
+    # def generate(self):
+    #     pass
+
+    # def reverse(self):
+    #
+    #     if self.reverse_btn.config('relief')[-1] == 'sunken':
+    #         self.reverse_btn.config(relief="raised")
+    #     else:
+    #         self.reverse_btn.config(relief="sunken")
 
     def clearScreen(self):
         """Clears the screen"""
@@ -214,6 +227,16 @@ class Application(Frame):
                     variable=self.is_reverse
                     ).grid(row=5, column=0, sticky=W)
 
+        # create a CheckBox and text entry for a Tolerance
+        # Tolerance setting button
+        self.is_tolerant = BooleanVar()
+        Checkbutton(self,
+                    text="Tolerance",
+                    variable=self.is_tolerant
+                    ).grid(row=6, column=0, sticky=W)
+        self.tolerance_ent = Entry(self, width=8)
+        self.tolerance_ent.grid(row=6, column=0, sticky=E)
+
         # create a CheckBox and text entry for a Brightness
         # Brightness setting button
         self.is_bright = BooleanVar()
@@ -310,41 +333,39 @@ class Application(Frame):
                                     highlightbackground='#3E4149',
                                     ).grid(row=13, column=0, sticky=W, padx=20, pady=5)
 
-        # create a watermark on an image button
+        # create a thumbnail image button
         self.watermark_btn = Button(self,
                                     text="Watermark",
                                     command=self.watermark,
+                                    # bg='blue',
+                                    # fg='#ffffff',
                                     highlightbackground='#3E4149',
                                     ).grid(row=14, column=0, sticky=W, padx=20, pady=5)
-
-
-        # create a colorized image button
-        self.colorize_btn = Button(self,
-                                   text="Colorize",
-                                   command=self.colorize,
-                                   highlightbackground='#3E4149',
-                                   ).grid(row=15, column=0, sticky=W, padx=20, pady=5)
 
         # create a filler
         Label(self,
               text=" "
-              ).grid(row=16, column=0, sticky=W)
+              ).grid(row=15, column=0, sticky=W)
 
         # create a the clear screen button
         self.clear_btn = Button(self,
                                 text="Clear",
                                 command=self.clearScreen,
+                                # bg='blue',
+                                # fg='#ffffff',
                                 highlightbackground='#3E4149',
                                 font=btnFont
-                                ).grid(row=17, column=0, sticky=E, pady=10, padx=5)
+                                ).grid(row=16, column=0, sticky=E, pady=10, padx=5)
 
         # create a the generate button
         self.generate_btn = Button(self,
                                    text="Generate",
                                    command=self.processSelections,
+                                   # bg='blue',
+                                   # fg='#ffffff',
                                    highlightbackground='#3E4149',
                                    font=btnFont
-                                   ).grid(row=17, column=1, sticky=W, pady=10, padx=5)
+                                   ).grid(row=16, column=1, sticky=W, pady=10, padx=5)
 
 
     # Check for numeric and -1-255
@@ -379,6 +400,8 @@ class Application(Frame):
         # set text size, 1:40 of the image width
         font_size = int(im_width / 40)
         # load font e.g. gotham-bold.ttf
+        #font = ImageFont.load_default()
+        #font = ImageFont.truetype("arialbd.ttf", 12, encoding="unic")
         font = ImageFont.truetype('/Library/Fonts/Arial.ttf', 25)
 
         d = ImageDraw.Draw(wm_txt)
@@ -425,111 +448,6 @@ class Application(Frame):
 
     # show image in preview
         im.show()
-
-    def colorize(self):
-        self.lblFont = font.Font(weight="bold")
-        self.lblFont = font.Font(size=16)
-
-        self.colorFrame = Toplevel(self)
-        self.colorFrame.wm_title("Colorize Settings")
-
-        Label(self.colorFrame,
-              text="Select a Tolerance value and a color using the RGB sliders and press Generate.",
-              wraplength=200,
-              font=self.lblFont
-              ).grid(row=0, column=0, sticky=W, padx=10, pady=10)
-
-        Label(self.colorFrame,
-              text="Tolerance:"
-              ).grid(row=1, column=0, sticky=W, padx=10, pady=10)
-        self.tolerance_ent = Entry(self.colorFrame, width=10)
-        self.tolerance_ent.grid(row=1, column=0, sticky=E, padx=10, pady=10)
-
-        self.red_value = DoubleVar()
-        Scale(self.colorFrame,
-              variable=self.red_value,
-              from_=0, to=255,
-              resolution=1,
-              label="Red",
-              orient=HORIZONTAL
-              ).grid(row=2, column=0, sticky=NSEW, padx=10, pady=10)
-        self.red_value.set(0)
-
-        self.green_value = DoubleVar()
-        Scale(self.colorFrame,
-              variable=self.green_value,
-              from_=0, to=255,
-              resolution=1,
-              label="Green",
-              orient=HORIZONTAL
-              ).grid(row=3, column=0, sticky=NSEW, padx=10, pady=10)
-        self.green_value.set(0)
-
-        self.blue_value = DoubleVar()
-        Scale(self.colorFrame,
-              variable=self.blue_value,
-              from_=0, to=255,
-              resolution=1,
-              label="Blue",
-              orient=HORIZONTAL
-              ).grid(row=4, column=0, sticky=NSEW, padx=10, pady=10)
-        self.blue_value.set(0)
-
-        # create a the generate button
-        self.gen_colorize_btn = Button(self.colorFrame,
-                                   text="Generate",
-                                   command=self.processColorize,
-                                   highlightbackground='#3E4149',
-                                   font=self.lblFont
-                                   ).grid(row=5, column=0, sticky=E, pady=10, padx=5)
-
-    # Square distance between 2 colors
-    def distance2(self, color1, color2):
-        r1, g1, b1 = color1
-        r2, g2, b2 = color2
-        return (r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2
-
-    def processColorize(self):
-        """ Adds a user selected color to the image """
-        # read each pixel into memory as the image object im
-        im = Image.open(self.fileName)
-        pixels = im.load()
-        #pixels = storePixels(im)
-        print("stored")
-        # manipulate file name for save process
-        baseFile = self.fileName.split('/')
-        length = len(baseFile)
-        base = baseFile[len(baseFile) - 1]
-        print(baseFile[len(baseFile) - 1])
-
-        # Create output image
-        out = Image.new("RGB", im.size)
-        draw = ImageDraw.Draw(out)
-
-        # get select color
-        red = (int(self.red_value.get()))
-        green = (int(self.green_value.get()))
-        blue = (int(self.blue_value.get()))
-        color_to_change = (red, green, blue)
-
-        # get tolerance value
-        threshold = (int(self.tolerance_ent.get()))
-
-        # Generate image
-        for x in range(im.width):
-            for y in range(im.height):
-                r, g, b = pixels[x, y]
-                if self.distance2(color_to_change, pixels[x, y]) < threshold ** 2:
-                    r = int(r * .5)
-                    g = int(g * 1.25)
-                    b = int(b * .5)
-                draw.point((x, y), (r, g, b))
-
-        out.save("output.png")
-        out.save('colorized-' + base)
-        print("file colorized-" + base + " saved")
-
-        self.colorFrame.destroy()
 
     def scramblePixels(self):
         """ Randomly scrambles the pixel values """
