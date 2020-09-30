@@ -395,7 +395,6 @@ class Application(Frame):
         base = baseFile[len(baseFile) - 1]
         print(baseFile[len(baseFile) - 1])
         print("len(self.selected_pixels): ", len(self.selected_pixels))
-
         # grab the selected pixes
         if len(self.selected_pixels) >= 1:
             pixel1 = self.selected_pixels[len(self.selected_pixels)-1]
@@ -403,42 +402,20 @@ class Application(Frame):
             pixel2 = self.selected_pixels[len(self.selected_pixels)-2]
             print("Second pixel: ", pixel2)
 
-            x1, y1 = pixel1
-            print("x1: ", x1)
-            print("y1: ", y1)
+        # Create output image
+        out = Image.new("RGB", im.size)
+        draw = ImageDraw.Draw(out)
 
-            x2, y2 = pixel2
-            print("x2: ", x2)
-            print("y2: ", y2)
+        # Generate image
+        for x in range(out.width):
+            for y in range(out.height):
+                r, g, b = pixels[x, y]
+                draw.point((x, y), (r, g, b))
 
-            size = (abs(x1-x2), abs(y1-y2))
-            print("Image Size = ", size)
-
-            # Create output image
-            out = Image.new("RGB", size)
-            draw = ImageDraw.Draw(out)
-
-            print("out.width: ", out.width)
-            print("out.height: ", out.height)
-
-            # Cropped image of above dimension
-            # (It will not change orginal image)
-            out = im.crop((x2, y2, x1, y1))
-
-            # Shows the image in image viewer
-            out.show()
-
-            #
-            # # Generate image
-            # for x in range(out.width):
-            #     for y in range(out.height):
-            #         r, g, b = pixels[x, y]
-            #         draw.point((x, y), (r, g, b))
-
-            # save reversed image
-            out.save('new_image-' + base)
-            print("file new_image-" + base + " saved")
-            self.clearScreen()
+        # save reversed image
+        out.save('new_image-' + base)
+        print("file new_image-" + base + " saved")
+        self.clearScreen()
 
     def watermark(self):
         # Taken from https://medium.com/analytics-vidhya/some-interesting-tricks-in-python-pillow-8fe5acce6084
