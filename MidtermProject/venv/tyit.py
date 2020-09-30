@@ -67,6 +67,8 @@ class Application(Frame):
         helpMenu.add_command(label="About...", command=self.donothing)
         menu.add_cascade(label="Help", menu=helpMenu)
 
+        self.selected_pixels = []  # list of tuples [()]
+
         self.grid()
         self.create_initial_screen()
         #self.create_widgets()
@@ -102,6 +104,9 @@ class Application(Frame):
         self.width_ent.delete(0, 'end')
         self.angle_ent.delete(0, 'end')
 
+        # clear lables
+        self.err2show.set("")
+
         # deselect radio buttons
         self.flipValue.set(None)
 
@@ -113,6 +118,8 @@ class Application(Frame):
     # function to be called when mouse is clicked
     def getcoords(self, event):
         # outputting x and y coords to console
+        self.selected_pixels.append((event.x, event.y))
+        print("Selected Pixels: ", self.selected_pixels)
         print(event.x, event.y)
         return (event.x, event.y)
 
@@ -324,10 +331,17 @@ class Application(Frame):
                                    highlightbackground='#3E4149',
                                    ).grid(row=15, column=0, sticky=W, padx=20, pady=5)
 
+        # create a colorized image button
+        self.capture_btn = Button(self,
+                                   text="Capture Pixels",
+                                   command=self.capture,
+                                   highlightbackground='#3E4149',
+                                   ).grid(row=16, column=0, sticky=W, padx=20, pady=5)
+
         # create a filler
         Label(self,
               text=" "
-              ).grid(row=16, column=0, sticky=W)
+              ).grid(row=17, column=0, sticky=W)
 
         # create a the clear screen button
         self.clear_btn = Button(self,
@@ -335,7 +349,7 @@ class Application(Frame):
                                 command=self.clearScreen,
                                 highlightbackground='#3E4149',
                                 font=btnFont
-                                ).grid(row=17, column=0, sticky=E, pady=10, padx=5)
+                                ).grid(row=18, column=0, sticky=E, pady=10, padx=5)
 
         # create a the generate button
         self.generate_btn = Button(self,
@@ -343,7 +357,7 @@ class Application(Frame):
                                    command=self.processSelections,
                                    highlightbackground='#3E4149',
                                    font=btnFont
-                                   ).grid(row=17, column=1, sticky=W, pady=10, padx=5)
+                                   ).grid(row=18, column=1, sticky=W, pady=10, padx=5)
 
         self.errFont = font.Font(weight="bold")
         self.errFont = font.Font(size=20)
@@ -353,7 +367,7 @@ class Application(Frame):
               foreground="red",
               font=self.errFont,
               wraplength=200
-              ).grid(row=18, column=0, sticky=NSEW, pady=4)
+              ).grid(row=19, column=0, sticky=NSEW, pady=4)
 
 
     # Check for numeric and -1-255
@@ -368,6 +382,40 @@ class Application(Frame):
             return False
 
     # end def is_number(n):
+
+    def capture(self):
+        """Creates image from selected pixel range"""
+        # get current image
+        im = Image.open(self.fileName)
+        pixels = im.load()
+        #pixels = storePixels(im)  # store rgb pixels
+        # manipulate file name for save process
+        baseFile = self.fileName.split('/')
+        length = len(baseFile)
+        base = baseFile[len(baseFile) - 1]
+        print(baseFile[len(baseFile) - 1])
+        print("len(self.selected_pixels): ", len(self.selected_pixels))
+        # grab the selected pixes
+        if len(self.selected_pixels) >= 1:
+            pixel1 = self.selected_pixels[len(self.selected_pixels)-1]
+            print("First pixel: ", pixel1)
+            pixel2 = self.selected_pixels[len(self.selected_pixels)-2]
+            print("Second pixel: ", pixel2)
+
+        # Create output image
+        out = Image.new("RGB", im.size)
+        draw = ImageDraw.Draw(out)
+
+        # Generate image
+        for x in range(out.width):
+            for y in range(out.height):
+                r, g, b = pixels[x, y]
+                draw.point((x, y), (r, g, b))
+
+        # save reversed image
+        out.save('new_image-' + base)
+        print("file new_image-" + base + " saved")
+        self.clearScreen()
 
     def watermark(self):
         # Taken from https://medium.com/analytics-vidhya/some-interesting-tricks-in-python-pillow-8fe5acce6084

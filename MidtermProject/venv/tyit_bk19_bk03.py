@@ -113,8 +113,10 @@ class Application(Frame):
     # function to be called when mouse is clicked
     def getcoords(self, event):
         # outputting x and y coords to console
-        print(event.x, event.y)
-        return (event.x, event.y)
+        self.x = event.x
+        self.y = event.y
+        print(self.x, self.y)
+        return (self.x, self.y)
 
     def putImage(self, fileName):
         """Get the image from the Open menu and
@@ -134,7 +136,6 @@ class Application(Frame):
         self.canvas.bind("<Button 1>", self.getcoords)
 
         print("Current Image Size: ", self.image.size)
-
         # this lines UNPACKS values
         # of variable a
         (h, w) = self.image.size
@@ -291,6 +292,16 @@ class Application(Frame):
                                    highlightbackground='#3E4149',
                                    ).grid(row=10, column=0, sticky=W, padx=20, pady=5)
 
+        # create a filler
+        Label(self,
+              text="Pixel 1:"
+              ).grid(row=10, column=0, sticky=E)
+
+        # create a filler
+        Label(self,
+              text="some text"
+              ).grid(row=10, column=1, sticky=W)
+
         # create a the scramble pixels button
         self.scramble_btn = Button(self,
                                text="Scramble",
@@ -299,6 +310,16 @@ class Application(Frame):
                                # fg='#ffffff',
                                highlightbackground='#3E4149',
                                ).grid(row=11, column=0, sticky=W, padx=20, pady=5)
+
+        # create a filler
+        Label(self,
+              text="Pixel 2:"
+              ).grid(row=11, column=0, sticky=E)
+
+        # create a filler
+        Label(self,
+              text="some text"
+              ).grid(row=11, column=1, sticky=W)
 
         # create a thumbnail image button
         self.thumbnail_btn = Button(self,
@@ -324,10 +345,16 @@ class Application(Frame):
                                    highlightbackground='#3E4149',
                                    ).grid(row=15, column=0, sticky=W, padx=20, pady=5)
 
+        self.capture_btn = Button(self,
+                                  text="Capture Pixels",
+                                  command=self.capture,
+                                  highlightbackground='#3E4149',
+                                  ).grid(row=16, column=0, sticky=W, padx=20, pady=5)
+
         # create a filler
         Label(self,
               text=" "
-              ).grid(row=16, column=0, sticky=W)
+              ).grid(row=17, column=0, sticky=W)
 
         # create a the clear screen button
         self.clear_btn = Button(self,
@@ -335,7 +362,7 @@ class Application(Frame):
                                 command=self.clearScreen,
                                 highlightbackground='#3E4149',
                                 font=btnFont
-                                ).grid(row=17, column=0, sticky=E, pady=10, padx=5)
+                                ).grid(row=18, column=0, sticky=E, pady=10, padx=5)
 
         # create a the generate button
         self.generate_btn = Button(self,
@@ -343,7 +370,7 @@ class Application(Frame):
                                    command=self.processSelections,
                                    highlightbackground='#3E4149',
                                    font=btnFont
-                                   ).grid(row=17, column=1, sticky=W, pady=10, padx=5)
+                                   ).grid(row=18, column=1, sticky=W, pady=10, padx=5)
 
         self.errFont = font.Font(weight="bold")
         self.errFont = font.Font(size=20)
@@ -353,7 +380,7 @@ class Application(Frame):
               foreground="red",
               font=self.errFont,
               wraplength=200
-              ).grid(row=18, column=0, sticky=NSEW, pady=4)
+              ).grid(row=19, column=0, sticky=NSEW, pady=4)
 
 
     # Check for numeric and -1-255
@@ -368,6 +395,56 @@ class Application(Frame):
             return False
 
     # end def is_number(n):
+
+    def capture(self):
+        self.lblFont = font.Font(weight="bold")
+        self.lblFont = font.Font(size=16)
+
+        self.captureFrame = Toplevel(self)
+        self.captureFrame.wm_title("Capture Pixes")
+
+        Label(self.captureFrame,
+              text="Select two pixel locations from the current image and press the Generate button.",
+              wraplength=200,
+              font=self.lblFont
+              ).grid(row=0, column=0, sticky=W, padx=10, pady=10)
+
+        Label(self.captureFrame,
+              text="Pixel 1:"
+              ).grid(row=3, column=0, sticky=W, padx=5, pady=5)
+        self.left_ent = Entry(self.captureFrame, width=10)
+        self.left_ent.grid(row=3, column=0, sticky=E, padx=5, pady=5)
+        Label(self.captureFrame,
+              text="Pixel 1:"
+              ).grid(row=3, column=1, sticky=W, padx=5, pady=5)
+
+        Label(self.captureFrame,
+              text="Pixel 2:"
+              ).grid(row=4, column=0, sticky=W, padx=5, pady=5)
+        self.left_ent = Entry(self.captureFrame, width=10)
+        self.left_ent.grid(row=4, column=0, sticky=E, padx=5, pady=5)
+        Label(self.captureFrame,
+              text="Pixel 2:"
+              ).grid(row=4, column=1, sticky=W, padx=5, pady=5)
+
+        # create a the generate button
+        self.gen_capture_pixels_btn = Button(self.captureFrame,
+                                       text="Generate",
+                                       command=self.processCapturePixels,
+                                       highlightbackground='#3E4149',
+                                       font=self.lblFont
+                                       ).grid(row=5, column=0, sticky=E, pady=10, padx=5)
+
+        self.cerr2show = StringVar()
+        Label(self.captureFrame,
+              textvariable=self.cerr2show,
+              foreground="red",
+              font=self.errFont,
+              wraplength=200
+              ).grid(row=2, column=0, sticky=NSEW, pady=4)
+
+    def processCapturePixels(self):
+        pass
 
     def watermark(self):
         # Taken from https://medium.com/analytics-vidhya/some-interesting-tricks-in-python-pillow-8fe5acce6084
@@ -492,6 +569,14 @@ class Application(Frame):
                                    font=self.lblFont
                                    ).grid(row=5, column=0, sticky=E, pady=10, padx=5)
 
+        self.cerr2show = StringVar()
+        Label(self.colorFrame,
+              textvariable=self.cerr2show,
+              foreground="red",
+              font=self.errFont,
+              wraplength=200
+              ).grid(row=6, column=0, sticky=NSEW, pady=4)
+
     # Square distance between 2 colors
     def distance2(self, color1, color2):
         r1, g1, b1 = color1
@@ -501,6 +586,7 @@ class Application(Frame):
     def processColorize(self):
         """ Adds a user selected color to the image """
         # read each pixel into memory as the image object im
+        err = False
         im = Image.open(self.fileName)
         pixels = im.load()
         #pixels = storePixels(im)
@@ -521,27 +607,32 @@ class Application(Frame):
         blue = (int(self.blue_value.get()))
         color_to_change = (red, green, blue)
 
-        # get tolerance value
-        threshold = (int(self.tolerance_ent.get()))
+        # check threshold
+        try:
+            t = int(self.tolerance_ent.get())
+        except Exception as e:
+            err = True
+            self.cerr2show.set("Colorize Tolerance value is missing or invalid")
 
-        # Generate image
-        for x in range(im.width):
-            for y in range(im.height):
-                r, g, b = pixels[x, y]
-                if self.distance2(color_to_change, pixels[x, y]) < threshold ** 2:
-                    # r = int(r * .5)
-                    # g = int(g * 1.25)
-                    # b = int(b * .5)
-                    r = int(r * (red/255))
-                    g = int(g * (green/255))
-                    b = int(b * (blue/255))
-                draw.point((x, y), (r, g, b))
+        if err == False:
+            # get tolerance value
+            threshold = (int(self.tolerance_ent.get()))
 
-        out.save("output.png")
-        out.save('colorized-' + base)
-        print("file colorized-" + base + " saved")
+            # Generate image
+            for x in range(im.width):
+                for y in range(im.height):
+                    r, g, b = pixels[x, y]
+                    if self.distance2(color_to_change, pixels[x, y]) < threshold ** 2:
+                        r = int(r * (red/255))
+                        g = int(g * (green/255))
+                        b = int(b * (blue/255))
+                    draw.point((x, y), (r, g, b))
 
-        self.colorFrame.destroy()
+            out.save("output.png")
+            out.save('colorized-' + base)
+            print("file colorized-" + base + " saved")
+
+            self.colorFrame.destroy()
 
     def scramblePixels(self):
         """ Randomly scrambles the pixel values """
