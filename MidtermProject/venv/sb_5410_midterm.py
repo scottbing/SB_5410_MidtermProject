@@ -129,7 +129,7 @@ class Application(Frame):
         # Show the user selected image
         # set up orginal story frame
         imageFrame = LabelFrame(self, text="Original Story")
-        imageFrame.grid(row=0, column=0, sticky="nsew")
+        imageFrame.grid(row=0, column=0, columnspan=3, sticky="nsew")
 
         self.image = Image.open(self.fileName)
         self.photo = ImageTk.PhotoImage(self.image)
@@ -231,7 +231,7 @@ class Application(Frame):
         self.bright_value = DoubleVar()
         Scale(self,
               variable=self.bright_value,
-              from_ = 0, to = 2,
+              from_ = .5, to = 2,
               resolution=0.5,
               orient = HORIZONTAL
               ).grid(row=7, column=0, sticky=E)
@@ -253,7 +253,7 @@ class Application(Frame):
         self.contrast_value = DoubleVar()
         Scale(self,
               variable=self.contrast_value,
-              from_=0, to=2,
+              from_=.5, to=2,
               resolution=0.5,
               orient=HORIZONTAL
               ).grid(row=8, column=0, sticky=E)
@@ -275,7 +275,7 @@ class Application(Frame):
         self.sharpness_value = DoubleVar()
         Scale(self,
               variable=self.sharpness_value,
-              from_=0, to=2,
+              from_=.5, to=2,
               resolution=0.5,
               orient=HORIZONTAL
               ).grid(row=9, column=0, sticky=E)
@@ -333,7 +333,7 @@ class Application(Frame):
 
         # create a colorized image button
         self.capture_btn = Button(self,
-                                   text="Capture Pixels",
+                                   text="Crop Image",
                                    command=self.capture,
                                    highlightbackground='#3E4149',
                                    ).grid(row=16, column=0, sticky=W, padx=20, pady=5)
@@ -421,19 +421,19 @@ class Application(Frame):
             print("out.width: ", out.width)
             print("out.height: ", out.height)
 
+            # flip the x's
+            if x1 < x2:
+                tmpx = x1
+                x1 = x2
+                x2 = tmpx
+
+
             # Cropped image of above dimension
             # (It will not change orginal image)
             out = im.crop((x2, y2, x1, y1))
 
             # Shows the image in image viewer
             out.show()
-
-            #
-            # # Generate image
-            # for x in range(out.width):
-            #     for y in range(out.height):
-            #         r, g, b = pixels[x, y]
-            #         draw.point((x, y), (r, g, b))
 
             # save reversed image
             out.save('new_image-' + base)
@@ -459,7 +459,7 @@ class Application(Frame):
         # set text size, 1:40 of the image width
         font_size = int(im_width / 40)
         # load font e.g. gotham-bold.ttf
-        font = ImageFont.truetype('/Library/Fonts/Arial.ttf', 25)
+        font = ImageFont.truetype('/Library/Fonts/Arial.ttf', 20)
 
         d = ImageDraw.Draw(wm_txt)
         wm_text = "Scott Bing"
@@ -971,6 +971,7 @@ class Application(Frame):
 
 # main
 root = Tk()
+root.resizable(height = None, width = None)
 root.title("BSSD 5410 Midterm Scott Bing")
 app = Application(root)
 root.mainloop()
